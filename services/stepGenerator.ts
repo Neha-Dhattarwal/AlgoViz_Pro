@@ -1727,6 +1727,110 @@ export const generateSteps = (problemId: string, category: string, initialData: 
     return steps;
   }
 
+  // 24. CLONE GRAPH
+  if (problemId === 'clone-graph') {
+    // Constructing a small graph: 1-2, 2-3, 3-4, 4-1
+    const adjList = [[2, 4], [1, 3], [2, 4], [1, 3]];
+    const nodes = adjList.map((_, i) => ({ value: i + 1, neighbors: [] as any[] }));
+    adjList.forEach((neighbors, i) => {
+      neighbors.forEach(neighborVal => {
+        nodes[i].neighbors.push(nodes[neighborVal - 1]);
+      });
+    });
+
+    const oldToNew = new Map<number, any>();
+    const clone = (node: any, stack: string[]): any => {
+      const curStack = [...stack, `cloneNode(${node.value})`];
+      if (oldToNew.has(node.value)) {
+        steps.push(createStep({ type: 'GRAPH', line_number: 4, explanation: `Node ${node.value} already cloned. Returning copy.`, call_stack: curStack, variables: { oldToNew: Array.from(oldToNew.keys()).join(',') } }));
+        return oldToNew.get(node.value);
+      }
+
+      const copy = { value: node.value, neighbors: [] };
+      oldToNew.set(node.value, copy);
+      steps.push(createStep({ type: 'GRAPH', line_number: 6, explanation: `Cloning node ${node.value}. Added to map.`, call_stack: curStack, highlights: [node.value], variables: { oldToNew: Array.from(oldToNew.keys()).join(',') } }));
+
+      for (const nei of node.neighbors) {
+        steps.push(createStep({ type: 'GRAPH', line_number: 8, explanation: `Cloning neighbor ${nei.value} of ${node.value}`, call_stack: curStack, pointers: { current: node.value, neighbor: nei.value } }));
+        copy.neighbors.push(clone(nei, curStack));
+      }
+      return copy;
+    };
+
+    clone(nodes[0], ["solve()"]);
+    return steps;
+  }
+
+  // 25. COURSE SCHEDULE
+  if (problemId === 'course-schedule') {
+    const numCourses = 2;
+    const prerequisites = [[1, 0]];
+    const adj = Array.from({ length: numCourses }, () => [] as number[]);
+    for (const [c, p] of prerequisites) adj[p].push(c);
+
+    steps.push(createStep({ type: 'GRAPH', line_number: 2, explanation: `Built adjacency list for ${numCourses} courses.`, variables: { adj: JSON.stringify(adj) } }));
+
+    const visit = new Set<number>();
+    const dfs = (c: number, stack: string[]): boolean => {
+      const curStack = [...stack, `canFinish(${c})`];
+      if (visit.has(c)) {
+        steps.push(createStep({ type: 'GRAPH', line_number: 4, explanation: `Cycle detected at course ${c}!`, call_stack: curStack, operation_type: 'error_warning', highlights: [c] }));
+        return false;
+      }
+      if (adj[c].length === 0) {
+        steps.push(createStep({ type: 'GRAPH', line_number: 5, explanation: `Course ${c} has no prerequisites.`, call_stack: curStack, highlights: [c] }));
+        return true;
+      }
+
+      visit.add(c);
+      steps.push(createStep({ type: 'GRAPH', line_number: 6, explanation: `Marking course ${c} as visiting.`, call_stack: curStack, highlights: [c], variables: { visiting: Array.from(visit).join(',') } }));
+
+      for (const nei of adj[c]) {
+        if (!dfs(nei, curStack)) return false;
+      }
+
+      visit.delete(c);
+      adj[c] = []; // Optimization: mark as fully processed
+      steps.push(createStep({ type: 'GRAPH', line_number: 9, explanation: `Course ${c} completed. No cycles in this path.`, call_stack: curStack, highlights: [c] }));
+      return true;
+    };
+
+    for (let i = 0; i < numCourses; i++) {
+      if (!dfs(i, ["solve()"])) {
+        steps.push(createStep({ type: 'GRAPH', line_number: 12, explanation: `Cannot finish all courses.`, operation_type: 'error_warning' }));
+        return steps;
+      }
+    }
+
+    steps.push(createStep({ type: 'GRAPH', line_number: 14, explanation: `All courses can be finished.`, operation_type: 'match' }));
+    return steps;
+  }
+
+  // 26. NUMBER OF 1 BITS
+  if (problemId === 'number-of-1-bits') {
+    let n = typeof initialData === 'number' ? initialData : 11;
+    let res = 0;
+    const binaryStr = n.toString(2).padStart(32, '0');
+    steps.push(createStep({ type: 'ARRAY', line_number: 2, explanation: `n=${n} (${binaryStr.slice(-8)}...). Initializing count=0.`, variables: { n, count: 0 }, array: binaryStr.split('').map(Number) }));
+
+    while (n !== 0) {
+      const prevN = n;
+      n &= (n - 1);
+      res++;
+      const currentBinary = n.toString(2).padStart(32, '0');
+      steps.push(createStep({
+        type: 'ARRAY',
+        line_number: 3,
+        explanation: `n &= (n-1) -> ${prevN} & ${prevN - 1} = ${n}. Found 1 bit. count=${res}`,
+        variables: { n, count: res },
+        highlights: [31 - Math.log2(prevN ^ n)], // Rough highlight of the flipped bit
+        array: currentBinary.split('').map(Number)
+      }));
+    }
+    steps.push(createStep({ type: 'ARRAY', line_number: 4, explanation: `Final count of 1 bits: ${res}`, variables: { result: res }, operation_type: 'match' }));
+    return steps;
+  }
+
   // BATCH 7-8 (61-75) placeholders
 
   if (steps.length === 0) {
