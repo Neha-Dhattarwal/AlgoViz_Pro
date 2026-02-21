@@ -156,8 +156,6 @@ For full persistence, use a free **MongoDB Atlas** M0 cluster.
 After deployment, verify the following:
 1. **Health Check**: Visit `YOUR_BACKEND_URL/health` to ensure the asset server is live.
 2. **CORS**: Ensure your Vercel URL is allowed in the backend settings.
-3. **AI Logic**: Chat with the AI Tutor to verify the Gemini integration.
-l `gemini-3-pro-preview`**: Used for initial algorithm explanation (high reasoning capability).
-*   **Model `gemini-3-flash-preview`**: Used for the interactive chat tutor (low latency for real-time questions).
+
 
 The system instruction ensures the AI behaves as a "Senior Technical Interviewer" who guides students toward the answer using Socratic questioning rather than just providing the solution.
