@@ -5,6 +5,29 @@ AlgoViz Pro is a learning platform that helps students understand DSA (Data Stru
 It shows the logic of DSA step-by-step and visually explains how the code works during execution.
 
 ---
+## Home Screen
+
+![Home](assets/home.png)
+
+## Visualization Screen
+
+![Visualization](assets/home1.png)
+
+## Question Example 1
+
+![Question 1](assets/ques1.png)
+
+## Question Example 2
+
+![Question 2](assets/ques2.png)
+
+## Question Example 3
+
+![Question 3](assets/ques3.png)
+
+## Question Example 4
+
+![Question 4](assets/ques4.png)
 
 ## 🏗️ System Architecture
 
