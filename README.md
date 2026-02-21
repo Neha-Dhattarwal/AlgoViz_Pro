@@ -7,7 +7,7 @@ It shows the logic of DSA step-by-step and visually explains how the code works 
 ---
 ## Home Screen
 
-![Home](assets/home.png)
+![Home](assets/home2.png)
 
 ## Visualization Screen
 
