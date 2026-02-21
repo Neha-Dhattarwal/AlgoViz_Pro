@@ -103,31 +103,38 @@ Provides problem definitions and algorithmic metadata.
 
 ## 🚀 Deployment
 
+AlgoViz Pro is designed for zero-config deployment on free tiers.
+
 ### 1. Vercel (Frontend)
-The easiest way to deploy the AlgoViz UI.
-*   Connect your GitHub repository to [Vercel](https://vercel.com).
-*   **Environment Variables**: Add `API_KEY` in the Vercel Dashboard under Project Settings -> Environment Variables.
-*   **Build Command**: `npm run build`
-*   **Output Directory**: `dist` (or `build`)
+The React/Vite UI works perfectly on Vercel.
+- **Root Directory**: `.`
+- **Build Command**: `npm run build`
+- **Output Directory**: `dist`
+- **Environment Variables**: 
+  - `VITE_GEMINI_API_KEY`: Your Google Gemini API Key.
+  - `VITE_API_BASE_URL`: The URL of your Render backend (once deployed).
 
 ### 2. Render (Backend)
-Ideal for the FastAPI asset server.
-*   Create a new **Web Service** on [Render](https://render.com).
-*   **Runtime**: Python 3
-*   **Build Command**: `pip install -r requirements.txt`
-*   **Start Command**: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
-*   **Environment Variables**: Add `MONGODB_URL` if using a database.
+FastAPI and the static assets can be hosted for free on Render.
+- **Service Type**: Web Service
+- **Environment**: Python 3
+- **Root Directory**: `backend`
+- **Build Command**: `pip install -r requirements.txt`
+- **Start Command**: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
 
-### 3. Integration
-To link the deployed frontend to your backend:
-1.  Update the `API_BASE_URL` in `services/api.ts` to your Render URL.
-2.  Ensure CORS is configured in `backend/app/main.py` to allow your Vercel domain.
+### 3. Database (Optional)
+For full persistence, use a free **MongoDB Atlas** M0 cluster.
+- Add `MONGODB_URL` to your Render environment variables.
+- The system will automatically detect the database and use it.
 
 ---
 
-## 🎓 Integration Detail: AI Logic
-The AI Tutor uses a two-tiered approach:
-*   **Model `gemini-3-pro-preview`**: Used for initial algorithm explanation (high reasoning capability).
+## 🔍 Verification Checklist
+After deployment, verify the following:
+1. **Health Check**: Visit `YOUR_BACKEND_URL/health` to ensure the asset server is live.
+2. **CORS**: Ensure your Vercel URL is allowed in the backend settings.
+3. **AI Logic**: Chat with the AI Tutor to verify the Gemini integration.
+l `gemini-3-pro-preview`**: Used for initial algorithm explanation (high reasoning capability).
 *   **Model `gemini-3-flash-preview`**: Used for the interactive chat tutor (low latency for real-time questions).
 
 The system instruction ensures the AI behaves as a "Senior Technical Interviewer" who guides students toward the answer using Socratic questioning rather than just providing the solution.

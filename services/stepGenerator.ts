@@ -585,10 +585,10 @@ export const generateSteps = (problemId: string, category: string, initialData: 
 
     function dfs(r: number, c: number, callStack: string[]) {
       if (r < 0 || c < 0 || r >= grid.length || c >= grid[0].length || grid[r][c] === '0') {
-        steps.push(createStep({ type: 'MATRIX', line_number: 4, explanation: `DFS(${r},${c}): Out of bounds or water.`, call_stack: [...callStack, `dfs(${r},${c})`], grid }));
+        steps.push(createStep({ type: 'MATRIX', line_number: 4, explanation: `DFS(${r},${c}): Out of bounds or water.`, call_stack: [...callStack, `dfs(${r},${c})`], grid: JSON.parse(JSON.stringify(grid)) }));
         return;
       }
-      steps.push(createStep({ type: 'MATRIX', line_number: 5, explanation: `DFS(${r},${c}): Marking land as visited ('0').`, call_stack: [...callStack, `dfs(${r},${c})`], highlights: [r * grid[0].length + c], grid }));
+      steps.push(createStep({ type: 'MATRIX', line_number: 5, explanation: `DFS(${r},${c}): Marking land as visited ('0').`, call_stack: [...callStack, `dfs(${r},${c})`], highlights: [r * grid[0].length + c], grid: JSON.parse(JSON.stringify(grid)) }));
       grid[r][c] = '0';
       dfs(r + 1, c, [...callStack, `dfs(${r},${c})`]);
       dfs(r - 1, c, [...callStack, `dfs(${r},${c})`]);
@@ -598,10 +598,10 @@ export const generateSteps = (problemId: string, category: string, initialData: 
 
     for (let r = 0; r < grid.length; r++) {
       for (let c = 0; c < grid[0].length; c++) {
-        steps.push(createStep({ type: 'MATRIX', line_number: 9, explanation: `Checking cell (${r},${c})`, pointers: { r, c }, grid }));
+        steps.push(createStep({ type: 'MATRIX', line_number: 9, explanation: `Checking cell (${r},${c})`, pointers: { r, c }, grid: JSON.parse(JSON.stringify(grid)) }));
         if (grid[r][c] === '1') {
           count++;
-          steps.push(createStep({ type: 'MATRIX', line_number: 10, explanation: `Found land! count=${count}. Starting DFS.`, variables: { count }, pointers: { r, c }, highlights: [r * grid[0].length + c], grid }));
+          steps.push(createStep({ type: 'MATRIX', line_number: 10, explanation: `Found land! count=${count}. Starting DFS.`, variables: { count }, pointers: { r, c }, highlights: [r * grid[0].length + c], grid: JSON.parse(JSON.stringify(grid)) }));
           dfs(r, c, ["numIslands()"]);
         }
       }
@@ -1709,17 +1709,17 @@ export const generateSteps = (problemId: string, category: string, initialData: 
       }
       const char = grid[r][c];
       grid[r][c] = "#"; // visit
-      steps.push(createStep({ type: 'MATRIX', line_number: 5, explanation: `Matched '${char}' at (${r},${c}). Recursing...`, highlights: [r * grid[0].length + c], call_stack: curStack, grid }));
+      steps.push(createStep({ type: 'MATRIX', line_number: 5, explanation: `Matched '${char}' at (${r},${c}). Recursing...`, highlights: [r * grid[0].length + c], call_stack: curStack, grid: JSON.parse(JSON.stringify(grid)) }));
       const found = dfs(r + 1, c, i + 1, curStack) || dfs(r - 1, c, i + 1, curStack) || dfs(r, c + 1, i + 1, curStack) || dfs(r, c - 1, i + 1, curStack);
       grid[r][c] = char; // backtrack
       if (found) return true;
-      steps.push(createStep({ type: 'MATRIX', line_number: 8, explanation: `Backtracking from (${r},${c})`, highlights: [r * grid[0].length + c], call_stack: curStack, grid }));
+      steps.push(createStep({ type: 'MATRIX', line_number: 8, explanation: `Backtracking from (${r},${c})`, highlights: [r * grid[0].length + c], call_stack: curStack, grid: JSON.parse(JSON.stringify(grid)) }));
       return false;
     }
     for (let r = 0; r < grid.length; r++) {
       for (let c = 0; c < grid[0].length; c++) {
         if (dfs(r, c, 0, ["exist()"])) {
-          steps.push(createStep({ type: 'MATRIX', line_number: 12, explanation: `Found word "${word}"!`, operation_type: 'match', grid }));
+          steps.push(createStep({ type: 'MATRIX', line_number: 12, explanation: `Found word "${word}"!`, operation_type: 'match', grid: JSON.parse(JSON.stringify(grid)) }));
           return steps;
         }
       }
