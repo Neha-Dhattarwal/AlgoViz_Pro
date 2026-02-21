@@ -4,6 +4,10 @@ AlgoViz Pro is a learning platform that helps students understand DSA (Data Stru
 
 It shows the logic of DSA step-by-step and visually explains how the code works during execution.
 
+
+## Live Demo
+
+https://algo-viz-pro-gamma.vercel.app/
 ---
 ## Home Screen
 
