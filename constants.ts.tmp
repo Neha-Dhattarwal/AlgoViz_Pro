@@ -1,0 +1,6 @@
+
+import { Problem, Difficulty } from './types';
+
+export const INITIAL_PROBLEMS: Problem[] = [
+  // This will be replaced by the 75 problems
+];

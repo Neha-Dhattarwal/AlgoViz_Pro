@@ -1,0 +1,10 @@
+
+{
+  "id": "linked-list-cycle",
+  "title": "Linked List Cycle",
+  "difficulty": "Easy",
+  "category": "Linked List",
+  "languages": ["javascript", "python", "java"],
+  "hasVisualization": true,
+  "complexity": { "time": "O(N)", "space": "O(1)" }
+}

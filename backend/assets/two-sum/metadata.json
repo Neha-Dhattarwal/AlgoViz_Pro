@@ -1,0 +1,10 @@
+
+{
+  "id": "two-sum",
+  "title": "Two Sum",
+  "difficulty": "Easy",
+  "category": "Array",
+  "languages": ["javascript", "python", "java"],
+  "hasVisualization": true,
+  "visualType": "ARRAY"
+}
