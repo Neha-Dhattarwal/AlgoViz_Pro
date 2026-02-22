@@ -7,7 +7,7 @@ It shows the logic of DSA step-by-step and visually explains how the code works 
 
 ## Live Demo
 
-https://algo-viz-pro-gamma.vercel.app/
+https://algo-viz-p9nvxxwp2-neha-dhattarwals-projects.vercel.app/
 ---
 ## Home Screen
 
